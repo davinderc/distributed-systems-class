@@ -14,7 +14,7 @@ public class ProductClient{
 			System.out.println("Creating keyboard reader, emitter and receiver");
 			
 			System.out.println("How many connections do you want to make?");
-			int n = ler.readnextInt();
+			int n = ler.nextInt();
 			System.out.println("\n\n" + "n = " + n );
 			
 			ler.nextLine(); // reading the int n doesn't give a carriage return
@@ -28,7 +28,7 @@ public class ProductClient{
 	}
 }
 
-class Comunicacao implements {
+class Comunicacao implements Runnable{
 	Semaphore semaforo;
 	Scanner ler;
 	ObjectLeitor leitor;
@@ -46,16 +46,29 @@ class Comunicacao implements {
 	
 	public void run(){
 		try{
-			
-		
-        try {
-			Product c1 = (Product)Naming.lookup(url + "Gremio");
-			Product c2 = (Product)Naming.lookup(url + "Inter");
-			System.out.println(c1.getDescription());
-			System.out.println(c2.getDescription());
-		}
-		catch(Exception e) { 
-			System.out.println("Error" + e);
+			semaforo.acquire();
+			System.out.println("\n\n" + "Enter the communication URL" + numComm);
+			String url = ler.nextLine();
+			System.out.println("\n\n" + "Enter the object name");
+			String name = ler.nextLine();
+			semaforo.release();
+			while(true){
+				semaforo.acquire();
+				System.out.println("\n\n" + "Enter a communication message" + numComm);
+				String msg = ler.nextLine();
+				semaforo.release();
+				leitor.pegueString(msg);
+				Product ref = (Product)Naming.lookup(url + name);
+				leitor = (ObjectLeitor)ref.sendLeitor(leitor);
+				if(msg.startsWith("/quit")){
+					System.out.println("Closing communication" + numComm);
+					break;
+				}
+				System.out.println("\n\n" + "Message received at communication " + numComm);
+				leitor.printString();
+			}
+			ler.close();
+		} catch(Exception e) {System.out.println("Error" + e);
 		}
 	}
 }
