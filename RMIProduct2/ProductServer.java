@@ -1,11 +1,11 @@
 import java.rmi.*;
 import java.rmi.server.*;
-import java.rmi.registry.*;
+//import java.rmi.registry.*;
 //import java.rmi.registry.LocateRegistry;
 public class ProductServer{ 
 	public static void main(String args[]){ 
 		try{ 
-                        LocateRegistry.createRegistry(Registry.REGISTRY_PORT);  
+            //LocateRegistry.createRegistry(Registry.REGISTRY_PORT);  
 			System.out.println("construindo implementacao de servidores");
 			Product p1 = new ProductServant();
 			Product p2 = new ProductServant();

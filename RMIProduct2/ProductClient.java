@@ -47,7 +47,7 @@ class Comunicacao implements Runnable{
 	public void run(){
 		try{
 			semaforo.acquire();
-			System.out.println("\n\n" + "Enter the communication URL" + numComm);
+			System.out.println("\n\n" + "Enter the communication URL " + numComm);
 			String url = ler.nextLine();
 			System.out.println("\n\n" + "Enter the object name");
 			String name = ler.nextLine();
@@ -58,8 +58,8 @@ class Comunicacao implements Runnable{
 				String msg = ler.nextLine();
 				semaforo.release();
 				leitor.pegueString(msg);
-				Product ref = (Product)Naming.lookup(url + name);
-				leitor = (ObjectLeitor)ref.sendLeitor(leitor);
+				Product ref = (Product)Naming.lookup(url+name);
+				leitor = (ObjectLeitor)ref.sendLeitor(leitor); // Nome dos objetos tem que ser Inter ou Gremio
 				if(msg.startsWith("/quit")){
 					System.out.println("Closing communication" + numComm);
 					break;
